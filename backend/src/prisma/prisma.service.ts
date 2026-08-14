@@ -22,7 +22,9 @@ export class PrismaService
       password: process.env.DB_PASSWORD!,
       database: process.env.DB_NAME!,
 
-      ssl: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
 
       connectionLimit: 5,
       connectTimeout: 10000,
