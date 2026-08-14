@@ -1,6 +1,11 @@
 import "dotenv/config";
 
-import { Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
+import {
+  Injectable,
+  OnModuleDestroy,
+  OnModuleInit,
+} from "@nestjs/common";
+
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "../generated/prisma/client";
 
@@ -11,14 +16,13 @@ export class PrismaService
 {
   constructor() {
     const adapter = new PrismaMariaDb({
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      host: process.env.DB_HOST!,
+      port: Number(process.env.DB_PORT!),
+      user: process.env.DB_USER!,
+      password: process.env.DB_PASSWORD!,
+      database: process.env.DB_NAME!,
 
-      ssl: false,
-      allowPublicKeyRetrieval: true,
+      ssl: true,
 
       connectionLimit: 5,
       connectTimeout: 10000,
@@ -30,7 +34,7 @@ export class PrismaService
 
   async onModuleInit() {
     await this.$connect();
-    console.log("✅ Database connected successfully");
+    console.log("✅ Aiven MySQL connected");
   }
 
   async onModuleDestroy() {
