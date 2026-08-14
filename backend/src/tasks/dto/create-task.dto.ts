@@ -1,10 +1,12 @@
 import {
+  IsDateString,
   IsEnum,
+  IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
 
-export enum TaskStatus {
+enum TaskStatus {
   TODO = 'TODO',
   DOING = 'DOING',
   COMPLETED = 'COMPLETED',
@@ -13,25 +15,26 @@ export enum TaskStatus {
 
 export class CreateTaskDto {
   @IsString()
-  title: string;
+  @IsNotEmpty()
+  title!: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   description?: string;
 
-  @IsOptional()
   @IsEnum(TaskStatus)
+  @IsOptional()
   status?: TaskStatus;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   assignee?: string;
 
+  @IsDateString()
   @IsOptional()
-  @IsString()
   dueDate?: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   tag?: string;
 }
