@@ -14,13 +14,25 @@ export class PrismaService
   implements OnModuleInit
 {
   constructor() {
+    const databaseUrl = process.env.DATABASE_URL;
+
+    if (!databaseUrl) {
+      throw new Error("DATABASE_URL is not defined");
+    }
+
+    const url = new URL(databaseUrl);
+
     const adapter = new PrismaMariaDb({
-      host: process.env.DB_HOST || "localhost",
-      port: Number(process.env.DB_PORT || 3306),
-      user: process.env.DB_USER || "root",
-      password: process.env.DB_PASSWORD || "",
-      database: process.env.DB_NAME || "ablespace_tasks",
+      host: url.hostname,
+      port: Number(url.port),
+      user: decodeURIComponent(url.username),
+      password: decodeURIComponent(url.password),
+      database: url.pathname.replace("/", ""),
       connectionLimit: 5,
+      connectTimeout: 10000,
+      acquireTimeout: 10000,
+      idleTimeout: 300000,
+      ssl: true,
     });
 
     super({ adapter });
@@ -28,5 +40,6 @@ export class PrismaService
 
   async onModuleInit() {
     await this.$connect();
+    console.log("✅ Database connected successfully");
   }
 }
