@@ -18,6 +18,7 @@ export class PrismaService
       database: process.env.DB_NAME,
 
       ssl: false,
+      allowPublicKeyRetrieval: true,
 
       connectionLimit: 5,
       connectTimeout: 10000,
@@ -29,6 +30,7 @@ export class PrismaService
 
   async onModuleInit() {
     await this.$connect();
+    console.log("✅ Database connected successfully");
   }
 
   async onModuleDestroy() {
